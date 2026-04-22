@@ -2,3 +2,4 @@
 notebook/
 data/raw/
 __pycache__/
+*.pkl
