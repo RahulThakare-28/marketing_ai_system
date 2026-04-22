@@ -11,10 +11,11 @@
 
 ---
 #### how to run 
- 1. Train model (once)
+1. Train model (once)
   - python main.py train
-
-2. Run UI
+2. Run prediction pipeline (optionl)
+  - python main.py run
+3. Run UI
  - python app.py
 
  
