@@ -42,7 +42,8 @@ class Predictor:
 
     def predict(self, df):
         try:
-            X = df[["total_score", "total_amount", "price"]]
+            #X = df[["total_score", "total_amount", "price"]]
+            X = df[["total_amount", "price"]]
             df["probability"] = self.model.predict_proba(X)[:, 1]
 
             # debug
