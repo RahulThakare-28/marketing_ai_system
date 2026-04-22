@@ -4,7 +4,13 @@ from flask import Flask, render_template, request
 from src.pipeline.main_pipeline import Pipeline
 from src.utils.logger import get_logger
 
-app = Flask(__name__)
+app = Flask(
+    __name__, 
+    template_folder="ui/templates",
+    static_folder="ui/static"
+    )
+
+
 logger = get_logger("FlaskApp")
 
 
@@ -24,6 +30,7 @@ def home():
             pipeline = Pipeline()
 
             # 🔥 For now pipeline ignores input (next upgrade we connect it)
+            logger.info("Running pipeline from Flask...")
             df = pipeline.run()
 
             result = df.head(20).to_dict(orient="records")
