@@ -13,7 +13,7 @@
 #### how to run 
 1. Train model (once)
   - python main.py train
-2. Run prediction pipeline (optionl)
+2. Run prediction pipeline (optional)
   - python main.py run
 3. Run UI
  - python app.py
