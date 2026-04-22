@@ -96,6 +96,8 @@ brands = sorted(products_df["brand"].unique())
 def home():
     result = None
     error = None
+    message = None
+    
 
     if request.method == "POST":
         try:
@@ -125,7 +127,38 @@ def home():
             }
 
             logger.info("Running pipeline with user input...")
-            df = pipeline.run(product_input)
+
+            # new integrate
+            #df = pipeline.run(product_input)
+            # STRICT INPUT CHECK (IMPORTANT)
+            df = None
+            if product_name and category and brand:
+                logger.info("Running pipeline with user input...")
+                df = pipeline.run(product_input)
+            else:
+                logger.warning("Incomplete input → pipeline not executed")
+
+            if df is not None and not df.empty:
+
+                sort_order = request.form.get("sort_order", "desc")
+
+                try:
+                    limit = int(request.form.get("limit", 20))
+                except:
+                    limit = 20
+
+                df = df.sort_values(
+                    by="probability",
+                    ascending=(sort_order == "asc")
+                 )
+
+                df = df.head(limit)
+
+                result = df.to_dict(orient="records")
+
+            else:
+                message = "No matching customers found or insufficient input."
+
 
             # -----------------------------
             # 🔥 OLD UI FILTER LOGIC
@@ -141,18 +174,20 @@ def home():
             # -----------------------------
             # ✅ NEW FILTER + SORT LOGIC
             # -----------------------------
+            '''
             sort_order = request.form.get("sort_order", "desc")
             limit = int(request.form.get("limit", 20))
 
             df = df.sort_values(
-                by="probability",
-                ascending=(sort_order == "asc")
+               by="probability",
+               ascending=(sort_order == "asc")
             )
 
             df = df.head(limit)
 
             # ✅ Convert for UI rendering
             result = df.to_dict(orient="records")
+            '''
 
         except Exception as e:
             logger.error(f"UI Error: {e}")
@@ -172,7 +207,8 @@ def home():
         error=error,
         products=product_names,
         categories=categories,
-        brands=brands
+        brands=brands,
+        message=message
     )
 
 
