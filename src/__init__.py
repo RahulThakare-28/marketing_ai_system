@@ -1,4 +1,12 @@
 
+"""
+Marketing AI System - Source Package
+=====================================
+
+Core modules for data processing, feature engineering,
+model training, and customer targeting.
+"""
+
 from .behavior.interaction import InteractionEngine
 from .behavior.similarity import ProductSimilarity 
 
