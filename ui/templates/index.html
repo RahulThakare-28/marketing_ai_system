@@ -1,4 +1,5 @@
 
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,10 @@
 
 <form method="POST" class="mb-4">
 
+    <!-- ============================= -->
+    <!-- 🔥 OLD INPUTS (COMMENTED) -->
+    <!-- ============================= -->
+    <!--
     <div class="mb-3">
         <label>Product Name</label>
         <input type="text" name="product_name" class="form-control">
@@ -28,11 +33,67 @@
         <label>Brand</label>
         <input type="text" name="brand" class="form-control">
     </div>
+    -->
+
+    <!-- ============================= -->
+    <!-- ✅ NEW SMART INPUTS -->
+    <!-- ============================= -->
+
+    <div class="mb-3">
+        <label>Product Name</label>
+        <input list="product_list" name="product_name" class="form-control">
+        <datalist id="product_list">
+            {% for p in products %}
+            <option value="{{ p }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label>Category</label>
+        <select name="category" class="form-control">
+            <option value="">Select</option>
+            {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Brand</label>
+        <input list="brand_list" name="brand" class="form-control">
+        <datalist id="brand_list">
+            {% for b in brands %}
+            <option value="{{ b }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <!-- ============================= -->
+    <!-- ✅ SORT + LIMIT CONTROLS -->
+    <!-- ============================= -->
+
+    <div class="mb-3">
+        <label>Sort By Probability</label>
+        <select name="sort_order" class="form-control">
+            <option value="desc">High to Low</option>
+            <option value="asc">Low to High</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Number of Results</label>
+        <input type="number" name="limit" value="20" class="form-control">
+    </div>
 
     <button class="btn btn-primary">Find Customers</button>
 
 </form>
 
+<!-- ============================= -->
+<!-- 🔥 OLD TABLE (COMMENTED) -->
+<!-- ============================= -->
+<!--
 {% if result %}
 <h3>Top Target Customers</h3>
 
@@ -49,6 +110,41 @@
         <tr>
             <td>{{ row.user_id }}</td>
             <td>{{ "%.2f"|format(row.probability) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+-->
+
+<!-- ============================= -->
+<!-- ✅ NEW ENHANCED TABLE -->
+<!-- ============================= -->
+
+{% if result %}
+<h3>Top Target Customers</h3>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>City</th>
+            <th>Probability</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.user_id }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.gender }}</td>
+            <td>{{ row.city }}</td>
+            <td><strong>{{ "%.2f"|format(row.probability) }}</strong></td>
         </tr>
         {% endfor %}
     </tbody>
