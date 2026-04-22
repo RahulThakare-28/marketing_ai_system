@@ -19,7 +19,9 @@ class ModelTrainer:
 
             df["target"] = df["total_score"].apply(lambda x: 1 if x > 5 else 0)
 
-            X = df[["total_score", "total_amount", "price"]]
+            #X = df[["total_score", "total_amount", "price"]]
+            # fix leakage
+            X = df[["total_amount", "price"]]
             y = df["target"]
 
             X_train, X_test, y_train, y_test = train_test_split(
