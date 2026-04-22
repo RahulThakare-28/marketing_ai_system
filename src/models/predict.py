@@ -44,6 +44,9 @@ class Predictor:
         try:
             X = df[["total_score", "total_amount", "price"]]
             df["probability"] = self.model.predict_proba(X)[:, 1]
+
+            # debug
+            logger.info(f"Prediction sample:\n{df[['user_id','probability']].head()}")
             return df
 
         except Exception as e:
