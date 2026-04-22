@@ -158,7 +158,8 @@ def home():
                     by="probability",
                     ascending=(sort_order == "asc")
                  )
-
+                # new
+                df = df.sample(frac=1, random_state=42)
                 df = df.head(limit)
 
                 result = df.to_dict(orient="records")

@@ -82,7 +82,7 @@
 
         <div class="mb-3">
             <label>Number of Results</label>
-            <input type="number" name="limit"  min="1" class="form-control" value="{{request.form.limit}}">
+            <input type="number" name="limit"  min="1" class="form-control" value="{{request.form.limit if request.form.limit}}">
         </div>
 
         <button class="btn btn-primary" id="submitBtn">Find Customers</button>
@@ -150,7 +150,7 @@
                 <td>{{ row.city }}</td>
                 <!-- <td><strong>{{ "%.2f"|format(row.probability) }}</strong></td> -->
                 <td>
-                    <strong>{{ "%.4f"|format(row.probability) }}</strong><br>
+                    <strong>{{ "%.2f"|format(row.probability) }}</strong><br>
 
                     {% if row.probability >= 0.75 %}
                     <span class="badge bg-success">High</span>
