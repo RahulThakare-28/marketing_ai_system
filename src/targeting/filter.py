@@ -3,4 +3,4 @@
 class TargetSelector:
 
     def select(self, df):
-        return df[df["probability"] > 0.7]
+        return df[df["probability"] > 0.3]
