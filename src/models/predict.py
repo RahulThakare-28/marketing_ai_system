@@ -44,6 +44,7 @@ class Predictor:
         try:
             #X = df[["total_score", "total_amount", "price"]]
             X = df[["total_amount", "price"]]
+            logger.info(f"Prediction features used: {X.columns.tolist()}")
             df["probability"] = self.model.predict_proba(X)[:, 1]
 
             # debug
