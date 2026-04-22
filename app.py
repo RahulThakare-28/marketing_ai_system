@@ -95,6 +95,7 @@ brands = sorted(products_df["brand"].unique())
 @app.route("/", methods=["GET", "POST"])
 def home():
     result = None
+    show_result = False   # NEW
     error = None
     message = None
     
@@ -125,6 +126,7 @@ def home():
                 "category": category,
                 "brand": brand
             }
+            logger.info(f"Validated Input → {product_name}, {category}, {brand}")
 
             logger.info("Running pipeline with user input...")
 
@@ -132,9 +134,14 @@ def home():
             #df = pipeline.run(product_input)
             # STRICT INPUT CHECK (IMPORTANT)
             df = None
-            if product_name and category and brand:
+            #if product_name and category and brand:
+            if product_name and category and brand and category != "Select":
                 logger.info("Running pipeline with user input...")
                 df = pipeline.run(product_input)
+
+                show_result = True
+
+                logger.info(f"Pipeline output rows: {0 if df is None else len(df)}")
             else:
                 logger.warning("Incomplete input → pipeline not executed")
 
@@ -208,7 +215,8 @@ def home():
         products=product_names,
         categories=categories,
         brands=brands,
-        message=message
+        message=message,
+        show_result=show_result
     )
 
 
