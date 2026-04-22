@@ -31,9 +31,28 @@ def home():
 
             # 🔥 For now pipeline ignores input (next upgrade we connect it)
             logger.info("Running pipeline from Flask...")
-            df = pipeline.run()
 
-            result = df.head(20).to_dict(orient="records")
+            # new integrade, 
+            product_input = {
+                "product_name": product_name,
+                "category": category,
+                "brand": brand
+            }
+
+            df = pipeline.run(product_input)
+            #df = pipeline.run()
+
+            # new integrate for ui filter
+            sort_order = request.form.get("sort_order", "desc")
+            limit = int(request.form.get("limit", 20))
+
+            df = df.sort_values(
+                by="probability",
+                ascending=(sort_order == "asc")
+            )
+
+            result = df = df.head(limit)
+            #result = df.head(20).to_dict(orient="records") # old
 
         except Exception as e:
             logger.error(f"UI Error: {e}")
