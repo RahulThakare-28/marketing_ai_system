@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marketing AI System</title>
+</head>
+<body>
+
+<h2>Target Customer Finder</h2>
+
+<form method="POST">
+    <label>Product Name:</label><br>
+    <input type="text" name="product_name"><br><br>
+
+    <label>Category:</label><br>
+    <input type="text" name="category"><br><br>
+
+    <label>Brand:</label><br>
+    <input type="text" name="brand"><br><br>
+
+    <button type="submit">Find Customers</button>
+</form>
+
+{% if error %}
+    <p style="color:red;">Error: {{ error }}</p>
+{% endif %}
+
+{% if result %}
+    <h3>Top Target Customers</h3>
+    <table border="1">
+        <tr>
+            <th>User ID</th>
+            <th>Probability</th>
+        </tr>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.user_id }}</td>
+            <td>{{ row.probability }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+</body>
+</html>
