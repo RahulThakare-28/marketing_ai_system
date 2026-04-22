@@ -73,7 +73,7 @@ class DataMerger:
 
             logger.info(f"Merged shape: {merged.shape}")
             logger.info("Merge completed successfully")
-
+            logger.info(f"Columns after merge: {merged.columns.tolist()}") # debug : see column changes
             return merged
 
         except Exception as e:
