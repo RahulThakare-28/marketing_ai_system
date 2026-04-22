@@ -10,9 +10,9 @@ class ModelSelector:
     def train_and_select(self, X_train, X_test, y_train, y_test):
 
         models = {
-            "Logistic": LogisticRegression(max_iter=1000),
-            "RandomForest": RandomForestClassifier(),
-            "DecisionTree": DecisionTreeClassifier()
+            "Logistic": LogisticRegression(max_iter=1000, class_weight="balanced"),
+            "RandomForest": RandomForestClassifier(class_weight="balanced"),
+            "DecisionTree": DecisionTreeClassifier(class_weight="balanced")
         }
 
         best_model = None
