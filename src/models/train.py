@@ -17,7 +17,11 @@ class ModelTrainer:
         try:
             logger.info("Training model...")
 
-            df["target"] = df["total_score"].apply(lambda x: 1 if x > 5 else 0)
+            #df["target"] = df["total_score"].apply(lambda x: 1 if x > 5 else 0)
+            
+            # balance target using dynamic threshold
+            threshold = df["total_score"].quantile(0.75)
+            df["target"] = (df["total_score"] >= threshold).astype(int)
 
             #X = df[["total_score", "total_amount", "price"]]
             # fix leakage
