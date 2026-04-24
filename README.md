@@ -240,11 +240,7 @@ It improves:
 * Cost efficiency
 * Customer engagement
 
----
 
-## 👨‍💻 Author
-
-Developed as a Mini Project for academic and practical learning purposes.
 
 ---
 ### Data set link
