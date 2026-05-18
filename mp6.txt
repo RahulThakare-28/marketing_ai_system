@@ -1,0 +1,57 @@
+!pip install requests beautifulsoup4 pandas lxml
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+import requests
+url = "https://www.flipkart.com/msi-modern-14-c13m-intel-core-i3-13th-gen-1315u-8-gb-512-gb-ssd-windows-11-home-c13m-115in-thin-light-laptop/p/itm88e50504913b0?pid=COMHEZCB7BBCGMWD&lid=LSTCOMHEZCB7BBCGMWDUXPRUE&marketplace=FLIPKART&store=6bo%2Fb5g&srno=b_1_1&otracker=browse&fm=organic&iid=246c3a58-af1d-4526-9a47-dbd83788d178.COMHEZCB7BBCGMWD.SEARCH&ppt=None&ppn=None&ssid=f4nnslvdxs0000001779032894950&ov_redirect=true"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9"
+}
+response = requests.get(url, headers=headers)
+print("Status Code:", response.status_code)
+
+soup = BeautifulSoup(response.text, "html.parser")
+print(soup.title.text)
+
+
+review_text = soup.get_text()
+print(review_text[:5000])
+
+
+import re
+pattern = r'([A-Za-z ]+)Verified Buyer'
+customers = re.findall(pattern, review_text)
+print(customers[:10])
+
+clean_names = []
+for name in customers:
+    name = name.replace("more", "")
+    name = name.strip()
+    
+    if len(name) > 2 and "ratings" not in name:
+        clean_names.append(name)
+print(clean_names[:10])
+
+ratings = re.findall(r'(\d)\s?(?:Very Good|Good|Nice|Fair|Worth every penny|Value-for-money)', review_text)
+print(ratings[:10])
+
+tags = re.findall(r'(Very Good|Good|Nice|Fair|Worth every penny|Value-for-money)', review_text)
+print(tags[:10])
+
+comments = re.findall(r'(?:Very Good|Good|Nice|Fair|Worth every penny|Value-for-money)(.*?)(?:Verified Buyer)', review_text)
+clean_comments = []
+for comment in comments:
+    comment = comment.strip()
+    clean_comments.append(comment)
+print(clean_comments[:5])
+
+min_len = min(len(clean_names), len(tags), len(clean_comments))
+df = pd.DataFrame({
+    "Customer Name": clean_names[:min_len],
+    "Review Tag": tags[:min_len],
+    "Comment": clean_comments[:min_len]
+})
+df
